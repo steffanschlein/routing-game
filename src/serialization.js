@@ -1,4 +1,4 @@
-function encodeBoardConfiguration(boardConfiguration) {
+export function encodeBoardConfiguration(boardConfiguration) {
     validateBoardConfiguration(boardConfiguration)
     let accumulator = ""
     accumulator += boardConfiguration.allowedRods.toString(16).padStart(4, "0")
@@ -10,7 +10,7 @@ function encodeBoardConfiguration(boardConfiguration) {
     return accumulator
 }
 
-function decodeBoardConfiguration(encodedBoardConfiguration) {
+export function decodeBoardConfiguration(encodedBoardConfiguration) {
     let boardConfiguration = {}
     boardConfiguration.allowedRods = parseInt(encodedBoardConfiguration.substring(0, 4), 16)
     boardConfiguration.width = parseInt(encodedBoardConfiguration.substring(4, 6), 16)

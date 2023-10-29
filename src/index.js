@@ -1,3 +1,8 @@
+import { Button } from '@pixi/ui';
+import * as PIXI from 'pixi.js';
+import { problem16 } from './problems.js';
+import { decodeBoardConfiguration, encodeBoardConfiguration } from './serialization.js';
+
 let boardConfiguration = {}
 
 let hash = window.location.hash.substring(1);
@@ -27,8 +32,17 @@ let app = new PIXI.Application({
 });
 document.body.appendChild(app.view);
 
+const menuContainer = new PIXI.Container();
+
+const button = new Button();
+
+button.onPress.connect(() => console.log('Button pressed!') );
+
+const gameContainer = new PIXI.Container();
+// app.stage.addChild(gameContainer);
+
 const boardContainer = new PIXI.Container();
-app.stage.addChild(boardContainer);
+gameContainer.addChild(boardContainer);
 
 let rodTemplate = new PIXI.Graphics();
 rodTemplate.beginFill(0xffffff);
@@ -69,7 +83,7 @@ const basicText = new PIXI.Text();
 basicText.x = 50;
 basicText.y = 20;
 
-app.stage.addChild(basicText);
+gameContainer.addChild(basicText);
 
 function loadBordConfiguration(boardConfiguration) {
     pins.flat().forEach(pin => pin.active = false)
