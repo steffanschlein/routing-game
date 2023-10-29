@@ -1,9 +1,16 @@
-import { Container } from 'pixi.js';
+import { Container, Text } from 'pixi.js';
 import { createButton, createButtonList } from './ui_components.js';
 import { centerContainer } from './utils.js';
 
 export function createMenuContainer(app, startGame, startEditor) {
     const menuContainer = new Container();
+
+    const title = new Text('Routing-Spiel', {
+        fontSize: 42
+    });
+    title.x = app.screen.width / 2 - title.width / 2;
+    title.y = 50;
+    menuContainer.addChild(title);
 
     const newGameButton = createButton("Neues Spiel");
     newGameButton.onPress.connect(() => buttonList.visible = true);

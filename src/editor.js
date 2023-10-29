@@ -4,6 +4,13 @@ import { Board } from "./board";
 import { createButton, createSlider } from "./ui_components";
 import { encodeBoardConfiguration } from "./serialization";
 
+const baseConfiguration = {
+    width: 11,
+    height: 11,
+    allowedRods: 11,
+    pinPositions: []
+}
+
 export class Editor {
     container;
     constructor(app) {
@@ -18,7 +25,7 @@ export class Editor {
         this.updateUsedRodInfo();
         this.adjustBoardContainer();
 
-        this.board.allowedRods = 11
+        this.board.configuration = baseConfiguration
         const slider = createSlider((value) => this.board.allowedRods = value)
         slider.x = app.screen.width - slider.width - 60
         slider.y = 200
@@ -36,6 +43,15 @@ export class Editor {
         saveButton.x = app.screen.width - slider.width - 60;
         saveButton.y = 240
         this.container.addChild(saveButton);
+
+        const resetButton = createButton("Zurücksetzen");
+        resetButton.onPress.connect(() => {
+            this.board.configuration = baseConfiguration
+            slider.value = baseConfiguration.allowedRods
+        });
+        resetButton.x = app.screen.width - slider.width - 60;
+        resetButton.y = 300
+        this.container.addChild(resetButton);
     }
     
     updateUsedRodInfo() {

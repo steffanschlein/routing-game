@@ -34,11 +34,10 @@ export class Board {
 
     set configuration(configuration) {
         this.allowedRods = configuration.allowedRods;
-        this.pins.flat().forEach(pin => pin.active = false)
+        this.pins.flat().forEach(pin => this.basePin(pin.x_index, pin.y_index))
         const board = this;
         configuration.pinPositions.forEach(position => {
-            board.pins[position.x][position.y].tint = pinHighlightColor;
-            board.pins[position.x][position.y].active = true;
+            board.highlightPin(position.x, position.y)
         })
         // history.replaceState(null, "", "#" + encodeBoardConfiguration(boardConfiguration));
     }
