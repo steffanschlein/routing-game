@@ -25,8 +25,6 @@ let app = new PIXI.Application({
 document.body.appendChild(app.view);
 
 const boardContainer = new PIXI.Container();
-boardContainer.x = 70
-boardContainer.y = 70
 app.stage.addChild(boardContainer);
 
 let rodTemplate = new PIXI.Graphics();
@@ -158,5 +156,18 @@ function createPin(x, y) {
     return sprite
 }
 
+function adjustBoardContainer() {
+    const TOP_OFFSET = 30
+    const smallerSideLength = Math.min(app.screen.width, app.screen.height - TOP_OFFSET)
+    const margin = Math.min(80, smallerSideLength * 0.05)
+    const containerSize = smallerSideLength - 2 * margin
+    boardContainer.width = containerSize
+    boardContainer.height = containerSize
+
+    boardContainer.x = app.screen.width / 2 - containerSize / 2;
+    boardContainer.y = app.screen.height / 2 - containerSize / 2 + TOP_OFFSET;
+}
+
 loadBordConfiguration(boardConfiguration);
 updateUsedRodInfo();
+adjustBoardContainer();
