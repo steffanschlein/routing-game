@@ -16,6 +16,7 @@ const rodBaseColor = 0xd0d0d0;
 const rodHighlightColor = 0xff0000;
 const pinBaseColor = 0x4c4c4c;
 const pinHighlightColor = 0xff0000;
+const pinSelectedColor = 0x0000ff;
 const backgroundColor = "#ffffff"
 
 let app = new PIXI.Application({
@@ -71,9 +72,12 @@ basicText.y = 20;
 app.stage.addChild(basicText);
 
 function loadBordConfiguration(boardConfiguration) {
+    pins.flat().forEach(pin => pin.active = false)
     boardConfiguration.pinPositions.forEach(position => {
         pins[position.x][position.y].tint = pinHighlightColor;
+        pins[position.x][position.y].active = true;
     })
+    history.replaceState(null, "", "#" + encodeBoardConfiguration(boardConfiguration));
 }
 
 function onClick() {
@@ -86,7 +90,13 @@ let bulkModeStart = null;
 function onClickPin() {
     if (bulkModeStart === null) {
         bulkModeStart = [this.x_index, this.y_index]
+        this.tint = pinSelectedColor
     } else {
+        if (pins[bulkModeStart[0]][bulkModeStart[1]].active) {
+            pins[bulkModeStart[0]][bulkModeStart[1]].tint = pinHighlightColor
+        } else {
+            pins[bulkModeStart[0]][bulkModeStart[1]].tint = pinBaseColor
+        }
         if (this.x_index === bulkModeStart[0] && this.y_index !== bulkModeStart[1]) {
             range(bulkModeStart[1], this.y_index).forEach(y_index => {
                 const rod = rods_vertical[this.x_index][y_index]
@@ -154,6 +164,7 @@ function createPin(x, y) {
     sprite.y = y
     sprite.eventMode = 'static';
     sprite.cursor = 'pointer';
+    sprite.active = false;
     sprite.on('pointerdown', onClickPin);
     return sprite
 }
