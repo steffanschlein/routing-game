@@ -19,7 +19,10 @@ const pinBaseColor = 0x4c4c4c;
 const pinHighlightColor = 0xff0000;
 const backgroundColor = "#ffffff"
 
-let app = new PIXI.Application({ width: 640, height: 640, background: backgroundColor });
+let app = new PIXI.Application({
+    resizeTo: window,
+    background: backgroundColor
+});
 document.body.appendChild(app.view);
 
 let rodTemplate = new PIXI.Graphics();
