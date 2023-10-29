@@ -88,10 +88,10 @@ export class Board {
 
     selectPin(x, y) {
         this.pins[x][y].tint = pinSelectedColor
-        this.pins[x][y].active = true
     }
 
     highlightPin(x, y) {
+        this.pins[x][y].active = true
         this.pins[x][y].tint = pinHighlightColor
     }
 
