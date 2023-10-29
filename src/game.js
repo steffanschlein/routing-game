@@ -19,14 +19,11 @@ export class Game {
 
         const gameLogic = new GameLogic(this.updateUsedRodInfo())
         this.board = new Board(gameLogic)
-        this.board.loadBordConfiguration(boardConfiguration);
-
-        // const editorLogic = new EditorLogic()
-        // const board = new Board(editorLogic)
+        this.board.configuration = boardConfiguration;
 
         this.gameContainer.addChild(this.board.boardContainer);
 
-        this.updateUsedRodInfo();
+        this.updateUsedRodInfo()();
         this.adjustBoardContainer();
     }
     

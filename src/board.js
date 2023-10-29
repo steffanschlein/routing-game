@@ -1,6 +1,4 @@
 import { Container, Graphics } from "pixi.js";
-import { encodeBoardConfiguration } from "./serialization";
-import { range } from "./utils";
 
 const rodBaseColor = 0xd0d0d0;
 const rodHighlightColor = 0xff0000;
@@ -31,9 +29,27 @@ export class Board {
 
         this.boardContainer = new Container();
 
-        this.bulkModeStart = null
-
         this.spawnChildren()
+    }
+
+    set configuration(configuration) {
+        this.allowedRods = configuration.allowedRods;
+        this.pins.flat().forEach(pin => pin.active = false)
+        const board = this;
+        configuration.pinPositions.forEach(position => {
+            board.pins[position.x][position.y].tint = pinHighlightColor;
+            board.pins[position.x][position.y].active = true;
+        })
+        // history.replaceState(null, "", "#" + encodeBoardConfiguration(boardConfiguration));
+    }
+
+    get configuration() {
+        return {
+            width: this.pins.length,
+            height: this.pins[0].length,
+            allowedRods: this.allowedRods,
+            pinPositions: this.pins.flat().filter((pin) => pin.active).map((pin) => ({x: pin.x_index, y: pin.y_index}))
+        };
     }
 
     spawnChildren() {
@@ -59,20 +75,9 @@ export class Board {
             }
         }
     }
-
-    loadBordConfiguration(boardConfiguration) {
-        this.boardConfiguration = boardConfiguration
-        this.pins.flat().forEach(pin => pin.active = false)
-        const board = this;
-        boardConfiguration.pinPositions.forEach(position => {
-            board.pins[position.x][position.y].tint = pinHighlightColor;
-            board.pins[position.x][position.y].active = true;
-        })
-        history.replaceState(null, "", "#" + encodeBoardConfiguration(boardConfiguration));
-    }
     
     toggleRod(rod) {
-        if (!rod.selected && this.countSelectedRods() < this.boardConfiguration.allowedRods) {
+        if (!rod.selected && this.countSelectedRods() < this.allowedRods) {
             rod.selected = true;
             rod.tint = rodHighlightColor;
         }
@@ -84,6 +89,7 @@ export class Board {
 
     selectPin(x, y) {
         this.pins[x][y].tint = pinSelectedColor
+        this.pins[x][y].active = true
     }
 
     highlightPin(x, y) {
@@ -92,6 +98,7 @@ export class Board {
 
     basePin(x, y) {
         this.pins[x][y].tint = pinBaseColor
+        this.pins[x][y].active = false
     }
 
     createRod(x, y, angle) {

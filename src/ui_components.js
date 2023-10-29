@@ -1,5 +1,5 @@
-import { Application, Container, Graphics, Text } from 'pixi.js';
-import { FancyButton, List } from '@pixi/ui';
+import { Graphics } from 'pixi.js';
+import { FancyButton, List, Slider } from '@pixi/ui';
 
 export function createButton(text) {
     const BUTTON_WIDTH = 200
@@ -30,4 +30,64 @@ export function createButtonList(buttons) {
     list.x = listContainer.width / 2 - list.width / 2
     listContainer.addChild(list)
     return listContainer
+}
+
+export function createSlider(onChange) {
+    const meshColor = 0x4c4c4c;
+    const fillColor = 0xa0a0a0;
+    const borderColor = 0xFFFFFF;
+    const backgroundColor = 0xd0d0d0;
+    const fontColor = 0xFFFFFF;
+    const min = 2;
+    const max = 50;
+    const value = 11;
+    const width = 200;
+    const height = 20;
+    const radius = 25;
+    const handleRadius = 15;
+    const fontSize = 16;
+    const border = 3;
+    const handleBorder = 3;
+    const showValue = true;
+    const showFill = true
+
+    const bg = new Graphics()
+        .beginFill(borderColor)
+        .drawRoundedRect(0, 0, width, height, radius)
+        .beginFill(backgroundColor)
+        .drawRoundedRect(border, border, width - (border * 2), height - (border * 2), radius);
+
+    const fill = new Graphics()
+        .beginFill(borderColor)
+        .drawRoundedRect(0, 0, width, height, radius)
+        .beginFill(fillColor)
+        .drawRoundedRect(border, border, width - (border * 2), height - (border * 2), radius);
+
+    const slider = new Graphics()
+        .beginFill(borderColor)
+        .drawCircle(0, 0, handleRadius + handleBorder)
+        .beginFill(meshColor)
+        .drawCircle(0, 0, handleRadius)
+        .endFill();
+
+    // Component usage
+    const singleSlider = new Slider({
+        bg,
+        fill: showFill ? fill : null,
+        slider,
+        min,
+        max,
+        value,
+        valueTextStyle: {
+            fill: fontColor,
+            fontSize
+        },
+        showValue
+    });
+
+    singleSlider.value = value;
+
+    singleSlider.onUpdate.connect((value) => onChange(Math.round(value)));
+
+    return singleSlider;
 }
