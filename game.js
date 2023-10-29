@@ -8,10 +8,9 @@ try {
 }
 
 const PIN_DISTANCE = 50;
-const offset = 70;
 const PIN_RADIUS = 7;
-const rodLength = (PIN_DISTANCE - 2 * PIN_RADIUS) * 0.8;
-const rodWidth = PIN_RADIUS * 0.8
+const ROD_LENGTH = (PIN_DISTANCE - 2 * PIN_RADIUS) * 0.8;
+const ROD_WIDTH = PIN_RADIUS * 0.8
 
 const rodBaseColor = 0xd0d0d0;
 const rodHighlightColor = 0xff0000;
@@ -25,9 +24,14 @@ let app = new PIXI.Application({
 });
 document.body.appendChild(app.view);
 
+const boardContainer = new PIXI.Container();
+boardContainer.x = 70
+boardContainer.y = 70
+app.stage.addChild(boardContainer);
+
 let rodTemplate = new PIXI.Graphics();
 rodTemplate.beginFill(0xffffff);
-rodTemplate.drawRoundedRect(0, -rodWidth/2, rodLength, rodWidth, rodWidth/4);
+rodTemplate.drawRoundedRect(0, -ROD_WIDTH/2, ROD_LENGTH, ROD_WIDTH, ROD_WIDTH/4);
 
 let pinTemplate = new PIXI.Graphics();
 pinTemplate.beginFill(0xffffff);
@@ -39,23 +43,23 @@ let rods_vertical = Array.from(Array(11), () => new Array(10));
 
 for (let x_index = 0; x_index < 11; x_index++) {
     for (let y_index = 0; y_index < 11; y_index++) {
-        let x = x_index * PIN_DISTANCE + offset
-        let y = y_index * PIN_DISTANCE + offset
+        let x = x_index * PIN_DISTANCE
+        let y = y_index * PIN_DISTANCE
         if (x_index < 10) {
-            let rod = createRod(x + (PIN_DISTANCE - rodLength) / 2, y, 0)
+            let rod = createRod(x + (PIN_DISTANCE - ROD_LENGTH) / 2, y, 0)
             rods_horizontal[x_index][y_index] = rod
-            app.stage.addChild(rod)
+            boardContainer.addChild(rod)
         }
         if (y_index < 10) {
-            let rod = createRod(x, y + (PIN_DISTANCE - rodLength) / 2, 90)
+            let rod = createRod(x, y + (PIN_DISTANCE - ROD_LENGTH) / 2, 90)
             rods_vertical[x_index][y_index] = rod
-            app.stage.addChild(rod)
+            boardContainer.addChild(rod)
         }
         let pin = createPin(x, y)
         pin.x_index = x_index
         pin.y_index = y_index
         pins[x_index][y_index] = pin
-        app.stage.addChild(pin)
+        boardContainer.addChild(pin)
     }
 }
 
