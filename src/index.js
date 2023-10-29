@@ -1,4 +1,4 @@
-import { FancyButton } from '@pixi/ui';
+import { FancyButton, List } from '@pixi/ui';
 import { Application, Container, Graphics, Text } from 'pixi.js';
 import { problem16 } from './problems.js';
 import { decodeBoardConfiguration, encodeBoardConfiguration } from './serialization.js';
@@ -39,10 +39,49 @@ const buttonGroup = new Container();
 menuContainer.addChild(buttonGroup)
 
 const newGameButton = customButton("Neues Spiel");
-newGameButton.onPress.connect(startGame);
+newGameButton.onPress.connect(() => listContainer.visible = true);
 buttonGroup.addChild(newGameButton)
 
 centerContainer(buttonGroup)
+
+const bgColor = 0xeeeeee
+const listContainer = new Graphics().beginFill(bgColor).drawRect(0, 0, 240, 40 * 6 + 10 * 5 + 20 * 2);
+
+const veryEasyButton = customButton("Sehr leicht");
+veryEasyButton.onPress.connect(() => startGame());
+const easyButton = customButton("Leicht");
+easyButton.onPress.connect(() => startGame());
+const mediumButton = customButton("Mittel");
+mediumButton.onPress.connect(() => startGame());
+const hardButton = customButton("Schwer");
+hardButton.onPress.connect(() => startGame());
+const veryHardButton = customButton("Sehr schwer");
+veryHardButton.onPress.connect(() => startGame());
+const extremlyHardButton = customButton("Extrem schwer");
+extremlyHardButton.onPress.connect(() => startGame());
+
+const items = [
+    veryEasyButton,
+    easyButton,
+    mediumButton,
+    hardButton,
+    veryHardButton,
+    extremlyHardButton
+]
+
+const list = new List({
+    elementsMargin: 10,
+    vertPadding: 20,
+    type: "vertical"
+});
+
+menuContainer.addChild(listContainer);
+items.forEach((item) => list.addChild(item));
+list.x = listContainer.width / 2 - list.width / 2
+listContainer.addChild(list)
+listContainer.visible = false
+
+centerContainer(listContainer)
 
 const gameContainer = new Container();
 
