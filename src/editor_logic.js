@@ -1,5 +1,3 @@
-import { range } from "./utils";
-
 export class EditorLogic {
     constructor() {
 

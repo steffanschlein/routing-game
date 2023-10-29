@@ -2,13 +2,13 @@ import { Container } from 'pixi.js';
 import { createButton, createButtonList } from './ui_components.js';
 import { centerContainer } from './utils.js';
 
-export function createMenuContainer(app, startGame) {
+export function createMenuContainer(app, startGame, startEditor) {
     const menuContainer = new Container();
 
     const newGameButton = createButton("Neues Spiel");
     newGameButton.onPress.connect(() => buttonList.visible = true);
     const editorButton = createButton("Editor");
-    editorButton.onPress.connect(() => console.log("editor"))
+    editorButton.onPress.connect(startEditor)
 
     const mainButtonList = createButtonList([
         newGameButton,
