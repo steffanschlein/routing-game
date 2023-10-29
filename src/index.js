@@ -1,7 +1,7 @@
-import { FancyButton, List } from '@pixi/ui';
 import { Application, Container, Graphics, Text } from 'pixi.js';
 import { problem16 } from './problems.js';
 import { decodeBoardConfiguration, encodeBoardConfiguration } from './serialization.js';
+import { createMenuContainer } from './menu.js';
 
 let boardConfiguration = {}
 
@@ -32,56 +32,9 @@ let app = new Application({
 });
 document.body.appendChild(app.view);
 
-const menuContainer = new Container();
+const menuContainer = createMenuContainer(app, startGame)
+
 app.stage.addChild(menuContainer)
-
-const buttonGroup = new Container();
-menuContainer.addChild(buttonGroup)
-
-const newGameButton = customButton("Neues Spiel");
-newGameButton.onPress.connect(() => listContainer.visible = true);
-buttonGroup.addChild(newGameButton)
-
-centerContainer(buttonGroup)
-
-const bgColor = 0xeeeeee
-const listContainer = new Graphics().beginFill(bgColor).drawRect(0, 0, 240, 40 * 6 + 10 * 5 + 20 * 2);
-
-const veryEasyButton = customButton("Sehr leicht");
-veryEasyButton.onPress.connect(() => startGame());
-const easyButton = customButton("Leicht");
-easyButton.onPress.connect(() => startGame());
-const mediumButton = customButton("Mittel");
-mediumButton.onPress.connect(() => startGame());
-const hardButton = customButton("Schwer");
-hardButton.onPress.connect(() => startGame());
-const veryHardButton = customButton("Sehr schwer");
-veryHardButton.onPress.connect(() => startGame());
-const extremlyHardButton = customButton("Extrem schwer");
-extremlyHardButton.onPress.connect(() => startGame());
-
-const items = [
-    veryEasyButton,
-    easyButton,
-    mediumButton,
-    hardButton,
-    veryHardButton,
-    extremlyHardButton
-]
-
-const list = new List({
-    elementsMargin: 10,
-    vertPadding: 20,
-    type: "vertical"
-});
-
-menuContainer.addChild(listContainer);
-items.forEach((item) => list.addChild(item));
-list.x = listContainer.width / 2 - list.width / 2
-listContainer.addChild(list)
-listContainer.visible = false
-
-centerContainer(listContainer)
 
 const gameContainer = new Container();
 
@@ -237,26 +190,6 @@ function adjustBoardContainer() {
 
     boardContainer.x = app.screen.width / 2 - containerSize / 2;
     boardContainer.y = app.screen.height / 2 - containerSize / 2 + TOP_OFFSET;
-}
-
-function customButton(text) {
-    const BUTTON_WIDTH = 200
-    const BUTTON_HEIGHT = 40
-    const BUTTON_RADIUS = 5
-    const BUTTON_DEFAULT_COLOR = 0xd0d0d0;
-    const BUTTON_HOVER_COLOR = 0xa0a0a0;
-    const BUTTON_PRESSED_COLOR = 0x4c4c4c;
-    return new FancyButton({
-        defaultView: new Graphics().beginFill(BUTTON_DEFAULT_COLOR).drawRoundedRect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_RADIUS),
-        hoverView: new Graphics().beginFill(BUTTON_HOVER_COLOR).drawRoundedRect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_RADIUS),
-        pressedView: new Graphics().beginFill(BUTTON_PRESSED_COLOR).drawRoundedRect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_RADIUS),
-        text: text
-    });
-}
-
-function centerContainer(container) {
-    container.x = app.screen.width / 2 - container.width / 2;
-    container.y = app.screen.height / 2 - container.height / 2;
 }
 
 function startGame() {
