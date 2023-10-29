@@ -23,9 +23,8 @@ pinTemplate.drawCircle(0, 0, PIN_RADIUS);
 
 export class Board {
     boardContainer;
-    constructor(app, updateUsedRodInfo) {
-        this.app = app
-        this.updateUsedRodInfo = updateUsedRodInfo
+    constructor(logic) {
+        this.logic = logic
         this.pins = Array.from(Array(11), () => new Array(11))
         this.rods_horizontal = Array.from(Array(11), () => new Array(10));
         this.rods_vertical = Array.from(Array(11), () => new Array(10));
@@ -71,34 +70,6 @@ export class Board {
         })
         history.replaceState(null, "", "#" + encodeBoardConfiguration(boardConfiguration));
     }
-
-    onClickPin(pin) {
-        return () => {
-            if (this.bulkModeStart === null) {
-                this.bulkModeStart = [pin.x_index, pin.y_index]
-                pin.tint = pinSelectedColor
-            } else {
-                if (this.pins[this.bulkModeStart[0]][this.bulkModeStart[1]].active) {
-                    this.pins[this.bulkModeStart[0]][this.bulkModeStart[1]].tint = pinHighlightColor
-                } else {
-                    this.pins[this.bulkModeStart[0]][this.bulkModeStart[1]].tint = pinBaseColor
-                }
-                if (pin.x_index === this.bulkModeStart[0] && pin.y_index !== this.bulkModeStart[1]) {
-                    range(this.bulkModeStart[1], pin.y_index).forEach(y_index => {
-                        const rod = this.rods_vertical[pin.x_index][y_index]
-                        this.toggleRod(rod);
-                    })
-                } else if (pin.x_index !== this.bulkModeStart[0] && pin.y_index === this.bulkModeStart[1]) {
-                    range(this.bulkModeStart[0], pin.x_index).forEach(x_index => {
-                        const rod = this.rods_horizontal[x_index][pin.y_index]
-                        this.toggleRod(rod);
-                    })
-                }
-                this.bulkModeStart = null
-                this.updateUsedRodInfo()
-            }
-        }
-    }
     
     toggleRod(rod) {
         if (!rod.selected && this.countSelectedRods() < this.boardConfiguration.allowedRods) {
@@ -110,12 +81,17 @@ export class Board {
             rod.tint = rodBaseColor;
         }
     }
-    
-    onClick(rod) {
-        return () => {
-            this.toggleRod(rod);
-            this.updateUsedRodInfo()
-        }
+
+    selectPin(x, y) {
+        this.pins[x][y].tint = pinSelectedColor
+    }
+
+    highlightPin(x, y) {
+        this.pins[x][y].tint = pinHighlightColor
+    }
+
+    basePin(x, y) {
+        this.pins[x][y].tint = pinBaseColor
     }
 
     createRod(x, y, angle) {
@@ -126,7 +102,7 @@ export class Board {
         sprite.angle = angle
         sprite.eventMode = 'static';
         sprite.cursor = 'pointer';
-        sprite.on('pointerdown', this.onClick(sprite));
+        sprite.on('pointerdown', this.logic.onClickRod(this, sprite));
         sprite.selected = false;
         return sprite
     }
@@ -139,20 +115,8 @@ export class Board {
         sprite.eventMode = 'static';
         sprite.cursor = 'pointer';
         sprite.active = false;
-        sprite.on('pointerdown', this.onClickPin(sprite));
+        sprite.on('pointerdown', this.logic.onClickPin(this, sprite));
         return sprite
-    }
-
-    adjustBoardContainer() {
-        const TOP_OFFSET = 30
-        const smallerSideLength = Math.min(this.app.screen.width, this.app.screen.height - TOP_OFFSET)
-        const margin = Math.min(80, smallerSideLength * 0.05)
-        const containerSize = smallerSideLength - 2 * margin
-        this.boardContainer.width = containerSize
-        this.boardContainer.height = containerSize
-    
-        this.boardContainer.x = this.app.screen.width / 2 - containerSize / 2;
-        this.boardContainer.y = this.app.screen.height / 2 - containerSize / 2 + TOP_OFFSET;
     }
 
     countSelectedRods() {

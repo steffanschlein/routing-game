@@ -5,14 +5,18 @@ import { centerContainer } from './utils.js';
 export function createMenuContainer(app, startGame) {
     const menuContainer = new Container();
 
-    const buttonGroup = new Container();
-    menuContainer.addChild(buttonGroup)
-
     const newGameButton = createButton("Neues Spiel");
     newGameButton.onPress.connect(() => buttonList.visible = true);
-    buttonGroup.addChild(newGameButton)
+    const editorButton = createButton("Editor");
+    editorButton.onPress.connect(() => console.log("editor"))
 
-    centerContainer(buttonGroup, app.screen)
+    const mainButtonList = createButtonList([
+        newGameButton,
+        editorButton
+    ])
+
+    menuContainer.addChild(mainButtonList)
+    centerContainer(mainButtonList, app.screen)
 
     const veryEasyButton = createButton("Sehr leicht");
     veryEasyButton.onPress.connect(() => startGame());

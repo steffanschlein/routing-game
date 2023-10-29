@@ -3,6 +3,8 @@ import { problem16 } from './problems.js';
 import { decodeBoardConfiguration, encodeBoardConfiguration } from './serialization.js';
 import { createMenuContainer } from './menu.js';
 import { Board } from './board.js';
+import { GameLogic } from './game_logic.js';
+import { EditorLogic } from './editor_logic.js';
 
 let boardConfiguration = {}
 
@@ -37,7 +39,12 @@ basicText.y = 20;
 
 gameContainer.addChild(basicText);
 
-const board = new Board(app, updateUsedRodInfo)
+const gameLogic = new GameLogic(updateUsedRodInfo)
+const board = new Board(gameLogic)
+board.loadBordConfiguration(boardConfiguration);
+
+// const editorLogic = new EditorLogic()
+// const board = new Board(editorLogic)
 
 gameContainer.addChild(board.boardContainer);
 
@@ -50,6 +57,16 @@ function startGame() {
     app.stage.addChild(gameContainer)
 }
 
-board.loadBordConfiguration(boardConfiguration);
+function adjustBoardContainer() {
+    const TOP_OFFSET = 30
+    const smallerSideLength = Math.min(app.screen.width, app.screen.height - TOP_OFFSET)
+    const margin = Math.min(80, smallerSideLength * 0.05)
+    const containerSize = smallerSideLength - 2 * margin
+    board.boardContainer.width = containerSize
+    board.boardContainer.height = containerSize
+
+    board.boardContainer.x = app.screen.width / 2 - containerSize / 2;
+    board.boardContainer.y = app.screen.height / 2 - containerSize / 2 + TOP_OFFSET;
+}
 updateUsedRodInfo();
-board.adjustBoardContainer();
+adjustBoardContainer();
