@@ -6,7 +6,6 @@ export class Game {
     gameContainer;
     constructor(app, boardConfiguration) {
         this.app = app
-        this.boardConfiguration = boardConfiguration
 
         this.gameContainer = new Container();
 
@@ -30,7 +29,7 @@ export class Game {
     updateUsedRodInfo() {
         const game = this
         return () => {
-            game.basicText.text = 'Benutzte Stäbe: ' + game.board.countSelectedRods() + ' / ' + game.boardConfiguration.allowedRods;
+            game.basicText.text = 'Benutzte Stäbe: ' + game.board.countSelectedRods() + ' / ' + game.board.allowedRods;
         }
     }
     

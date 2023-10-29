@@ -1,6 +1,11 @@
 import { Container, Text } from 'pixi.js';
 import { createButton, createButtonList } from './ui_components.js';
 import { centerContainer } from './utils.js';
+import { easyProblems, extremlyHardProblems, hardProblems, mediumProblems, veryEasyProblems, veryHardProblems } from './problems.js';
+
+Array.prototype.random = function () {
+    return this[Math.floor((Math.random()*this.length))];
+  }
 
 export function createMenuContainer(app, startGame, startEditor) {
     const menuContainer = new Container();
@@ -26,17 +31,17 @@ export function createMenuContainer(app, startGame, startEditor) {
     centerContainer(mainButtonList, app.screen)
 
     const veryEasyButton = createButton("Sehr leicht");
-    veryEasyButton.onPress.connect(() => startGame());
+    veryEasyButton.onPress.connect(() => startGame(veryEasyProblems.random()));
     const easyButton = createButton("Leicht");
-    easyButton.onPress.connect(() => startGame());
+    easyButton.onPress.connect(() => startGame(easyProblems.random()));
     const mediumButton = createButton("Mittel");
-    mediumButton.onPress.connect(() => startGame());
+    mediumButton.onPress.connect(() => startGame(mediumProblems.random()));
     const hardButton = createButton("Schwer");
-    hardButton.onPress.connect(() => startGame());
+    hardButton.onPress.connect(() => startGame(hardProblems.random()));
     const veryHardButton = createButton("Sehr schwer");
-    veryHardButton.onPress.connect(() => startGame());
+    veryHardButton.onPress.connect(() => startGame(veryHardProblems.random()));
     const extremlyHardButton = createButton("Extrem schwer");
-    extremlyHardButton.onPress.connect(() => startGame());
+    extremlyHardButton.onPress.connect(() => startGame(extremlyHardProblems.random()));
 
     const buttonList = createButtonList([
         veryEasyButton,

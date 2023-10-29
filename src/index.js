@@ -31,8 +31,10 @@ app.stage.addChild(menuContainer)
 const game = new Game(app, boardConfiguration)
 const editor = new Editor(app)
 
-function startGame() {
+function startGame(encodedProblem) {
     app.stage.removeChild(menuContainer)
+    game.board.configuration = decodeBoardConfiguration(encodedProblem)
+    game.updateUsedRodInfo()()
     app.stage.addChild(game.gameContainer)
 }
 
