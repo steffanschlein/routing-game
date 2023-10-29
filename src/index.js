@@ -1,5 +1,5 @@
 import { Button } from '@pixi/ui';
-import * as PIXI from 'pixi.js';
+import { Application, Container, Graphics, Text } from 'pixi.js';
 import { problem16 } from './problems.js';
 import { decodeBoardConfiguration, encodeBoardConfiguration } from './serialization.js';
 
@@ -24,7 +24,7 @@ const pinHighlightColor = 0xff0000;
 const pinSelectedColor = 0x0000ff;
 const backgroundColor = "#ffffff"
 
-let app = new PIXI.Application({
+let app = new Application({
     resizeTo: window,
     background: backgroundColor,
     resolution: devicePixelRatio,
@@ -32,23 +32,23 @@ let app = new PIXI.Application({
 });
 document.body.appendChild(app.view);
 
-const menuContainer = new PIXI.Container();
+const menuContainer = new Container();
 
 const button = new Button();
 
 button.onPress.connect(() => console.log('Button pressed!') );
 
-const gameContainer = new PIXI.Container();
-// app.stage.addChild(gameContainer);
+const gameContainer = new Container();
+app.stage.addChild(gameContainer);
 
-const boardContainer = new PIXI.Container();
+const boardContainer = new Container();
 gameContainer.addChild(boardContainer);
 
-let rodTemplate = new PIXI.Graphics();
+let rodTemplate = new Graphics();
 rodTemplate.beginFill(0xffffff);
 rodTemplate.drawRoundedRect(0, -ROD_WIDTH/2, ROD_LENGTH, ROD_WIDTH, ROD_WIDTH/4);
 
-let pinTemplate = new PIXI.Graphics();
+let pinTemplate = new Graphics();
 pinTemplate.beginFill(0xffffff);
 pinTemplate.drawCircle(0, 0, PIN_RADIUS);
 
@@ -78,7 +78,7 @@ for (let x_index = 0; x_index < 11; x_index++) {
     }
 }
 
-const basicText = new PIXI.Text();
+const basicText = new Text();
 
 basicText.x = 50;
 basicText.y = 20;
@@ -159,7 +159,7 @@ function range(start, end) {
 }
 
 function createRod(x, y, angle) {
-    let sprite = new PIXI.Graphics(rodTemplate.geometry);
+    let sprite = new Graphics(rodTemplate.geometry);
     sprite.tint = rodBaseColor;
     sprite.x = x
     sprite.y = y
@@ -172,7 +172,7 @@ function createRod(x, y, angle) {
 }
 
 function createPin(x, y) {
-    let sprite = new PIXI.Graphics(pinTemplate.geometry);
+    let sprite = new Graphics(pinTemplate.geometry);
     sprite.tint = pinBaseColor;
     sprite.x = x
     sprite.y = y
