@@ -1,5 +1,5 @@
 import { Application } from 'pixi.js';
-import { problem16 } from './problems.js';
+import { easyProblems } from './problems.js';
 import { decodeBoardConfiguration } from './serialization.js';
 import { createMenuContainer } from './menu.js';
 import { Game } from './game.js';
@@ -11,7 +11,7 @@ let hash = window.location.hash.substring(1);
 try {
     boardConfiguration = decodeBoardConfiguration(hash)
 } catch (error) {
-    boardConfiguration = decodeBoardConfiguration(problem16)
+    boardConfiguration = decodeBoardConfiguration(easyProblems[0])
 }
 
 const backgroundColor = "#ffffff"

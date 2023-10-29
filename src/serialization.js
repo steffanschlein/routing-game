@@ -11,6 +11,9 @@ export function encodeBoardConfiguration(boardConfiguration) {
 }
 
 export function decodeBoardConfiguration(encodedBoardConfiguration) {
+    if (encodedBoardConfiguration === undefined) {
+        throw new Error('AssertionError');
+    }
     let boardConfiguration = {}
     boardConfiguration.allowedRods = parseInt(encodedBoardConfiguration.substring(0, 4), 16)
     boardConfiguration.width = parseInt(encodedBoardConfiguration.substring(4, 6), 16)
