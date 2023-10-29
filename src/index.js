@@ -1,4 +1,4 @@
-import { Button } from '@pixi/ui';
+import { FancyButton } from '@pixi/ui';
 import { Application, Container, Graphics, Text } from 'pixi.js';
 import { problem16 } from './problems.js';
 import { decodeBoardConfiguration, encodeBoardConfiguration } from './serialization.js';
@@ -33,13 +33,18 @@ let app = new Application({
 document.body.appendChild(app.view);
 
 const menuContainer = new Container();
+app.stage.addChild(menuContainer)
 
-const button = new Button();
+const buttonGroup = new Container();
+menuContainer.addChild(buttonGroup)
 
-button.onPress.connect(() => console.log('Button pressed!') );
+const newGameButton = customButton("Neues Spiel");
+newGameButton.onPress.connect(startGame);
+buttonGroup.addChild(newGameButton)
+
+centerContainer(buttonGroup)
 
 const gameContainer = new Container();
-app.stage.addChild(gameContainer);
 
 const boardContainer = new Container();
 gameContainer.addChild(boardContainer);
@@ -193,6 +198,31 @@ function adjustBoardContainer() {
 
     boardContainer.x = app.screen.width / 2 - containerSize / 2;
     boardContainer.y = app.screen.height / 2 - containerSize / 2 + TOP_OFFSET;
+}
+
+function customButton(text) {
+    const BUTTON_WIDTH = 200
+    const BUTTON_HEIGHT = 40
+    const BUTTON_RADIUS = 5
+    const BUTTON_DEFAULT_COLOR = 0xd0d0d0;
+    const BUTTON_HOVER_COLOR = 0xa0a0a0;
+    const BUTTON_PRESSED_COLOR = 0x4c4c4c;
+    return new FancyButton({
+        defaultView: new Graphics().beginFill(BUTTON_DEFAULT_COLOR).drawRoundedRect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_RADIUS),
+        hoverView: new Graphics().beginFill(BUTTON_HOVER_COLOR).drawRoundedRect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_RADIUS),
+        pressedView: new Graphics().beginFill(BUTTON_PRESSED_COLOR).drawRoundedRect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_RADIUS),
+        text: text
+    });
+}
+
+function centerContainer(container) {
+    container.x = app.screen.width / 2 - container.width / 2;
+    container.y = app.screen.height / 2 - container.height / 2;
+}
+
+function startGame() {
+    app.stage.removeChild(menuContainer)
+    app.stage.addChild(gameContainer)
 }
 
 loadBordConfiguration(boardConfiguration);
