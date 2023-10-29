@@ -20,7 +20,9 @@ const backgroundColor = "#ffffff"
 
 let app = new PIXI.Application({
     resizeTo: window,
-    background: backgroundColor
+    background: backgroundColor,
+    resolution: devicePixelRatio,
+    autoDensity: true
 });
 document.body.appendChild(app.view);
 
