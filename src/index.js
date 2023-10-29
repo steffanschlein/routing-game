@@ -1,10 +1,8 @@
-import { Application, Container, Graphics, Text } from 'pixi.js';
+import { Application } from 'pixi.js';
 import { problem16 } from './problems.js';
-import { decodeBoardConfiguration, encodeBoardConfiguration } from './serialization.js';
+import { decodeBoardConfiguration } from './serialization.js';
 import { createMenuContainer } from './menu.js';
-import { Board } from './board.js';
-import { GameLogic } from './game_logic.js';
-import { EditorLogic } from './editor_logic.js';
+import { Game } from './game.js';
 
 let boardConfiguration = {}
 
@@ -29,44 +27,9 @@ const menuContainer = createMenuContainer(app, startGame)
 
 app.stage.addChild(menuContainer)
 
-const gameContainer = new Container();
-
-
-const basicText = new Text();
-
-basicText.x = 50;
-basicText.y = 20;
-
-gameContainer.addChild(basicText);
-
-const gameLogic = new GameLogic(updateUsedRodInfo)
-const board = new Board(gameLogic)
-board.loadBordConfiguration(boardConfiguration);
-
-// const editorLogic = new EditorLogic()
-// const board = new Board(editorLogic)
-
-gameContainer.addChild(board.boardContainer);
-
-function updateUsedRodInfo() {
-    basicText.text = 'Benutzte Stäbe: ' + board.countSelectedRods() + ' / ' + boardConfiguration.allowedRods;
-}
+const game = new Game(app, boardConfiguration)
 
 function startGame() {
     app.stage.removeChild(menuContainer)
-    app.stage.addChild(gameContainer)
+    app.stage.addChild(game.gameContainer)
 }
-
-function adjustBoardContainer() {
-    const TOP_OFFSET = 30
-    const smallerSideLength = Math.min(app.screen.width, app.screen.height - TOP_OFFSET)
-    const margin = Math.min(80, smallerSideLength * 0.05)
-    const containerSize = smallerSideLength - 2 * margin
-    board.boardContainer.width = containerSize
-    board.boardContainer.height = containerSize
-
-    board.boardContainer.x = app.screen.width / 2 - containerSize / 2;
-    board.boardContainer.y = app.screen.height / 2 - containerSize / 2 + TOP_OFFSET;
-}
-updateUsedRodInfo();
-adjustBoardContainer();
