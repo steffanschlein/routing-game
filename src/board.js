@@ -1,4 +1,4 @@
-import { Container, Graphics } from "pixi.js";
+import { Circle, Container, Graphics, Rectangle } from "pixi.js";
 
 const rodBaseColor = 0xd0d0d0;
 const rodHighlightColor = 0xff0000;
@@ -10,14 +10,6 @@ const PIN_DISTANCE = 50;
 const PIN_RADIUS = 7;
 const ROD_LENGTH = (PIN_DISTANCE - 2 * PIN_RADIUS) * 0.8;
 const ROD_WIDTH = PIN_RADIUS * 0.8
-
-let rodTemplate = new Graphics();
-rodTemplate.beginFill(0xffffff);
-rodTemplate.drawRoundedRect(0, -ROD_WIDTH/2, ROD_LENGTH, ROD_WIDTH, ROD_WIDTH/4);
-
-let pinTemplate = new Graphics();
-pinTemplate.beginFill(0xffffff);
-pinTemplate.drawCircle(0, 0, PIN_RADIUS);
 
 export class Board {
     boardContainer;
@@ -101,7 +93,9 @@ export class Board {
     }
 
     createRod(x, y, angle) {
-        let sprite = new Graphics(rodTemplate.geometry);
+        let sprite = new Graphics();
+        sprite.beginFill(0xffffff);
+        sprite.drawRoundedRect(0, -ROD_WIDTH/2, ROD_LENGTH, ROD_WIDTH, ROD_WIDTH/4);
         sprite.tint = rodBaseColor;
         sprite.x = x
         sprite.y = y
@@ -110,11 +104,14 @@ export class Board {
         sprite.cursor = 'pointer';
         sprite.on('pointerdown', this.logic.onClickRod(this, sprite));
         sprite.selected = false;
+        sprite.hitArea = new Rectangle(0, -ROD_WIDTH * 2, ROD_LENGTH, ROD_WIDTH * 4)
         return sprite
     }
     
     createPin(x, y) {
-        let sprite = new Graphics(pinTemplate.geometry);
+        let sprite = new Graphics();
+        sprite.beginFill(0xffffff);
+        sprite.drawCircle(0, 0, PIN_RADIUS);
         sprite.tint = pinBaseColor;
         sprite.x = x
         sprite.y = y
@@ -122,6 +119,7 @@ export class Board {
         sprite.cursor = 'pointer';
         sprite.active = false;
         sprite.on('pointerdown', this.logic.onClickPin(this, sprite));
+        sprite.hitArea = new Circle(0, 0, PIN_RADIUS * 2)
         return sprite
     }
 
