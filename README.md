@@ -1,3 +1,5 @@
+![](docs/routing-game-banner.png)
+
 # Routing Game
 
 The routing game originates from a common problem in chip design. Your task is to connect all pins on a grid with a limited number rods. Finding a solution with an additional rod is easy. Will you be able to solve this intriguing mathematical riddle?
