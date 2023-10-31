@@ -13,7 +13,7 @@ const baseConfiguration = {
 
 export class Editor {
     container;
-    constructor(app, mainMenu) {
+    constructor(app, mainMenu, startGame) {
         this.app = app
 
         this.container = new Container();
@@ -38,10 +38,16 @@ export class Editor {
         this.basicText.y = 200 - this.basicText.height - 10;
         this.container.addChild(this.basicText);
 
+        const startButton = createButton("Spiel starten");
+        startButton.onPress.connect(() => startGame("custom", encodeBoardConfiguration(this.board.configuration)));
+        startButton.x = app.screen.width - slider.width - 60;
+        startButton.y = 240
+        this.container.addChild(startButton);
+
         const saveButton = createButton("Ausgeben");
         saveButton.onPress.connect(() => alert("Kodierte Konfiguration: " + encodeBoardConfiguration(this.board.configuration)));
         saveButton.x = app.screen.width - slider.width - 60;
-        saveButton.y = 240
+        saveButton.y = 300
         this.container.addChild(saveButton);
 
         const resetButton = createButton("Zurücksetzen");
@@ -50,7 +56,7 @@ export class Editor {
             slider.value = baseConfiguration.allowedRods
         });
         resetButton.x = app.screen.width - slider.width - 60;
-        resetButton.y = 300
+        resetButton.y = 360
         this.container.addChild(resetButton);
 
         const mainMenuButton = createButton("Hauptmenu")

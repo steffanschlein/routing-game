@@ -32,7 +32,7 @@ export class Game {
         this.calculateLayout();
     }
     
-    start(difficulty) {
+    start(difficulty, customGameHash) {
         let encodedProblem
         switch (difficulty) {
             case 'very_easy':
@@ -59,6 +59,9 @@ export class Game {
                 encodedProblem = extremlyHardProblems.random()
                 this.updateDifficultyText("Extrem schwer")
                 break;
+            case 'custom':
+                encodedProblem = customGameHash
+                this.updateDifficultyText("Eigenes")
         }
         this.board.configuration = decodeBoardConfiguration(encodedProblem)
         this.updateUsedRodInfo()()

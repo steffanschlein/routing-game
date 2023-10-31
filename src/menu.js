@@ -6,7 +6,7 @@ Array.prototype.random = function () {
     return this[Math.floor((Math.random()*this.length))];
   }
 
-export function createMenuContainer(app, startGame, startEditor) {
+export function createMenuContainer(app, startGame, startEditor, customGameHash) {
     const menuContainer = new Container();
 
     const title = new Text('Routing-Spiel', {
@@ -29,6 +29,11 @@ export function createMenuContainer(app, startGame, startEditor) {
     menuContainer.addChild(mainButtonList)
     centerContainer(mainButtonList, app.screen)
 
+    const customButton = createButton("Eigenes");
+    customButton.onPress.connect(() => {
+        startGame("custom", customGameHash)
+        buttonList.visible = false
+    })
     const veryEasyButton = createButton("Sehr leicht");
     veryEasyButton.onPress.connect(() => {
         startGame("very_easy")
@@ -62,7 +67,7 @@ export function createMenuContainer(app, startGame, startEditor) {
     const backButton = createButton("Zurück");
     backButton.onPress.connect(() => buttonList.visible = false)
 
-    const buttonList = createButtonList([
+    const list = [
         veryEasyButton,
         easyButton,
         mediumButton,
@@ -70,7 +75,13 @@ export function createMenuContainer(app, startGame, startEditor) {
         veryHardButton,
         extremlyHardButton,
         backButton
-    ])
+    ]
+
+    if (customGameHash != null) {
+        list.unshift(customButton)
+    }
+
+    const buttonList = createButtonList(list)
     buttonList.visible = false
 
     menuContainer.addChild(buttonList)
