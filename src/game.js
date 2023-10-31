@@ -1,10 +1,12 @@
 import { Container, Text } from "pixi.js";
 import { GameLogic } from "./game_logic";
 import { Board } from "./board";
+import { easyProblems, hardProblems, mediumProblems, veryEasyProblems, veryHardProblems } from "./problems";
+import { decodeBoardConfiguration } from "./serialization";
 
 export class Game {
     gameContainer;
-    constructor(app, boardConfiguration) {
+    constructor(app) {
         this.app = app
 
         this.gameContainer = new Container();
@@ -18,7 +20,6 @@ export class Game {
 
         const gameLogic = new GameLogic(this.updateUsedRodInfo())
         this.board = new Board(gameLogic)
-        this.board.configuration = boardConfiguration;
 
         this.gameContainer.addChild(this.board.boardContainer);
 
@@ -26,6 +27,32 @@ export class Game {
         this.adjustBoardContainer();
     }
     
+    start(difficulty) {
+        let encodedProblem
+        switch (difficulty) {
+            case 'very_easy':
+                encodedProblem = veryEasyProblems.random()
+                break;
+            case 'easy':
+                encodedProblem = easyProblems.random()
+                break;
+            case 'medium':
+                encodedProblem = mediumProblems.random()
+                break;
+            case 'hard':
+                encodedProblem = hardProblems.random()
+                break;
+            case 'very_hard':
+                encodedProblem = veryHardProblems.random()
+                break;
+            case 'extremly_hard':
+                encodedProblem = extremlyHardProblems.random()
+                break;
+        }
+        this.board.configuration = decodeBoardConfiguration(encodedProblem)
+        this.updateUsedRodInfo()()
+    }
+
     updateUsedRodInfo() {
         const game = this
         return () => {

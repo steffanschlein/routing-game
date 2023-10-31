@@ -1,18 +1,7 @@
 import { Application } from 'pixi.js';
-import { easyProblems } from './problems.js';
-import { decodeBoardConfiguration } from './serialization.js';
 import { createMenuContainer } from './menu.js';
 import { Game } from './game.js';
 import { Editor } from './editor.js';
-
-let boardConfiguration = {}
-
-let hash = window.location.hash.substring(1);
-try {
-    boardConfiguration = decodeBoardConfiguration(hash)
-} catch (error) {
-    boardConfiguration = decodeBoardConfiguration(easyProblems[0])
-}
 
 const backgroundColor = "#ffffff"
 
@@ -28,13 +17,12 @@ const menuContainer = createMenuContainer(app, startGame, startEditor)
 
 app.stage.addChild(menuContainer)
 
-const game = new Game(app, boardConfiguration)
+const game = new Game(app)
 const editor = new Editor(app)
 
-function startGame(encodedProblem) {
+function startGame(difficulty) {
     app.stage.removeChild(menuContainer)
-    game.board.configuration = decodeBoardConfiguration(encodedProblem)
-    game.updateUsedRodInfo()()
+    game.start(difficulty)
     app.stage.addChild(game.gameContainer)
 }
 
