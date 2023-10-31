@@ -38,8 +38,8 @@ export class Editor {
         this.basicText.y = 200 - this.basicText.height - 10;
         this.container.addChild(this.basicText);
 
-        const saveButton = createButton("Speichern");
-        saveButton.onPress.connect(() => console.log(encodeBoardConfiguration(this.board.configuration)));
+        const saveButton = createButton("Ausgeben");
+        saveButton.onPress.connect(() => alert("Kodierte Konfiguration: " + encodeBoardConfiguration(this.board.configuration)));
         saveButton.x = app.screen.width - slider.width - 60;
         saveButton.y = 240
         this.container.addChild(saveButton);
