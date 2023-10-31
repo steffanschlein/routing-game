@@ -13,7 +13,7 @@ const baseConfiguration = {
 
 export class Editor {
     container;
-    constructor(app) {
+    constructor(app, mainMenu) {
         this.app = app
 
         this.container = new Container();
@@ -52,6 +52,13 @@ export class Editor {
         resetButton.x = app.screen.width - slider.width - 60;
         resetButton.y = 300
         this.container.addChild(resetButton);
+
+        const mainMenuButton = createButton("Hauptmenu")
+        mainMenuButton.anchor.set(0, 1)
+        mainMenuButton.x = this.board.boardContainer.x;
+        mainMenuButton.y = this.app.screen.height - 20;
+        mainMenuButton.onPress.connect(() => mainMenu())
+        this.container.addChild(mainMenuButton)
     }
     
     updateUsedRodInfo() {
@@ -62,15 +69,14 @@ export class Editor {
     }
     
     adjustBoardContainer() {
-        const TOP_OFFSET = 30
-        const HORIZONTAL_OFFSET = -80
-        const smallerSideLength = Math.min(this.app.screen.width - Math.abs(HORIZONTAL_OFFSET), this.app.screen.height - TOP_OFFSET)
+        const VERTICAL_MARGIN = 80
+        const smallerSideLength = Math.min(this.app.screen.width, this.app.screen.height - VERTICAL_MARGIN)
         const margin = Math.min(80, smallerSideLength * 0.05)
         const containerSize = smallerSideLength - 2 * margin
         this.board.boardContainer.width = containerSize
         this.board.boardContainer.height = containerSize
     
-        this.board.boardContainer.x = this.app.screen.width / 2 - containerSize / 2 + HORIZONTAL_OFFSET;
-        this.board.boardContainer.y = this.app.screen.height / 2 - containerSize / 2 + TOP_OFFSET;
+        this.board.boardContainer.x = this.app.screen.width / 2 - containerSize / 2;
+        this.board.boardContainer.y = this.app.screen.height / 2 - containerSize / 2;
     }
 }

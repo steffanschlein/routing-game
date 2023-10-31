@@ -30,17 +30,37 @@ export function createMenuContainer(app, startGame, startEditor) {
     centerContainer(mainButtonList, app.screen)
 
     const veryEasyButton = createButton("Sehr leicht");
-    veryEasyButton.onPress.connect(() => startGame("very_easy"));
+    veryEasyButton.onPress.connect(() => {
+        startGame("very_easy")
+        buttonList.visible = false
+    });
     const easyButton = createButton("Leicht");
-    easyButton.onPress.connect(() => startGame("easy"));
+    easyButton.onPress.connect(() => {
+        startGame("easy")
+        buttonList.visible = false
+    });
     const mediumButton = createButton("Mittel");
-    mediumButton.onPress.connect(() => startGame("medium"));
+    mediumButton.onPress.connect(() => {
+        startGame("medium")
+        buttonList.visible = false
+    });
     const hardButton = createButton("Schwer");
-    hardButton.onPress.connect(() => startGame("hard"));
+    hardButton.onPress.connect(() => {
+        startGame("hard")
+        buttonList.visible = false
+    });
     const veryHardButton = createButton("Sehr schwer");
-    veryHardButton.onPress.connect(() => startGame("very_hard"));
+    veryHardButton.onPress.connect(() => {
+        startGame("very_hard")
+        buttonList.visible = false
+    });
     const extremlyHardButton = createButton("Extrem schwer");
-    extremlyHardButton.onPress.connect(() => startGame("extremly_hard"));
+    extremlyHardButton.onPress.connect(() => {
+        startGame("extremly_hard")
+        buttonList.visible = false
+    });
+    const backButton = createButton("Zurück");
+    backButton.onPress.connect(() => buttonList.visible = false)
 
     const buttonList = createButtonList([
         veryEasyButton,
@@ -48,7 +68,8 @@ export function createMenuContainer(app, startGame, startEditor) {
         mediumButton,
         hardButton,
         veryHardButton,
-        extremlyHardButton
+        extremlyHardButton,
+        backButton
     ])
     buttonList.visible = false
 

@@ -17,16 +17,21 @@ const menuContainer = createMenuContainer(app, startGame, startEditor)
 
 app.stage.addChild(menuContainer)
 
-const game = new Game(app)
-const editor = new Editor(app)
+const game = new Game(app, mainMenu)
+const editor = new Editor(app, mainMenu)
 
 function startGame(difficulty) {
-    app.stage.removeChild(menuContainer)
+    app.stage.removeChildren()
     game.start(difficulty)
     app.stage.addChild(game.gameContainer)
 }
 
 function startEditor() {
-    app.stage.removeChild(menuContainer)
+    app.stage.removeChildren()
     app.stage.addChild(editor.container)
+}
+
+function mainMenu() {
+    app.stage.removeChildren()
+    app.stage.addChild(menuContainer)
 }
