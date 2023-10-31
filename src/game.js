@@ -12,11 +12,15 @@ export class Game {
         this.gameContainer = new Container();
 
         this.basicText = new Text();
-
         this.basicText.x = 50;
         this.basicText.y = 20;
-
         this.gameContainer.addChild(this.basicText);
+
+        this.difficultyText = new Text();
+        this.difficultyText.anchor.set(1, 0)
+        this.difficultyText.x = app.screen.width - 50
+        this.difficultyText.y = 20
+        this.gameContainer.addChild(this.difficultyText)
 
         const gameLogic = new GameLogic(this.updateUsedRodInfo())
         this.board = new Board(gameLogic)
@@ -32,25 +36,35 @@ export class Game {
         switch (difficulty) {
             case 'very_easy':
                 encodedProblem = veryEasyProblems.random()
+                this.updateDifficultyText("Sehr leicht")
                 break;
             case 'easy':
                 encodedProblem = easyProblems.random()
+                this.updateDifficultyText("Leicht")
                 break;
             case 'medium':
                 encodedProblem = mediumProblems.random()
+                this.updateDifficultyText("Mittel")
                 break;
             case 'hard':
                 encodedProblem = hardProblems.random()
+                this.updateDifficultyText("Mittel")
                 break;
             case 'very_hard':
                 encodedProblem = veryHardProblems.random()
+                this.updateDifficultyText("Sehr schwer")
                 break;
             case 'extremly_hard':
                 encodedProblem = extremlyHardProblems.random()
+                this.updateDifficultyText("Extrem schwer")
                 break;
         }
         this.board.configuration = decodeBoardConfiguration(encodedProblem)
         this.updateUsedRodInfo()()
+    }
+
+    updateDifficultyText(level) {
+        this.difficultyText.text = 'Stufe: ' + level
     }
 
     updateUsedRodInfo() {
