@@ -1,7 +1,7 @@
 import { Container, Text } from "pixi.js";
 import { GameLogic } from "./game_logic";
 import { Board } from "./board";
-import { easyProblems, hardProblems, mediumProblems, veryEasyProblems, veryHardProblems } from "./problems";
+import { easyProblems, extremlyHardProblems, hardProblems, mediumProblems, veryEasyProblems, veryHardProblems } from "./problems";
 import { decodeBoardConfiguration } from "./serialization";
 
 export class Game {
