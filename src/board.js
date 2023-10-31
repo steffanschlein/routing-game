@@ -31,6 +31,10 @@ export class Board {
         configuration.pinPositions.forEach(position => {
             board.highlightPin(position.x, position.y)
         })
+        this.rods_horizontal.flat().concat(this.rods_vertical.flat()).forEach((rod) => {
+            rod.selected = false;
+            rod.tint = rodBaseColor;
+        })
         // history.replaceState(null, "", "#" + encodeBoardConfiguration(boardConfiguration));
     }
 
