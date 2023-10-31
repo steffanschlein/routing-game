@@ -57,7 +57,7 @@ export class Game {
                 break;
             case 'hard':
                 encodedProblem = hardProblems.random()
-                this.updateDifficultyText("Mittel")
+                this.updateDifficultyText("Schwer")
                 break;
             case 'very_hard':
                 encodedProblem = veryHardProblems.random()
