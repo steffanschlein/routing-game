@@ -88,6 +88,11 @@ export class Game {
         const game = this
         return () => {
             game.basicText.text = 'Benutzte Stäbe: ' + game.board.countSelectedRods() + ' / ' + game.board.allowedRods;
+            if (game.board.countSelectedRods() > game.board.allowedRods) {
+                game.basicText.style.fill = 0xff0000
+            } else {
+                game.basicText.style.fill = 0x00000
+            }
         }
     }
     

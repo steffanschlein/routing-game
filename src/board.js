@@ -72,11 +72,11 @@ export class Board {
     }
     
     toggleRod(rod) {
-        if (!rod.selected && this.countSelectedRods() < this.allowedRods) {
+        if (!rod.selected) {
             rod.selected = true;
             rod.tint = rodHighlightColor;
         }
-        else if (rod.selected) {
+        else {
             rod.selected = false;
             rod.tint = rodBaseColor;
         }
