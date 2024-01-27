@@ -1,7 +1,7 @@
 import { Circle, Container, Graphics, Rectangle } from "pixi.js";
 
 const rodBaseColor = 0xd0d0d0;
-const rodHighlightColor = 0xff0000;
+const rodHighlightColor = 0x0000ff;
 const pinBaseColor = 0x4c4c4c;
 const pinHighlightColor = 0xff0000;
 const pinSelectedColor = 0x0000ff;
