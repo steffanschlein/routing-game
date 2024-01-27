@@ -13,6 +13,11 @@ export class GameLogic {
         }
     }
 
+    onClickResetRods(board) {
+        board.deselectAllRods()
+        this.updateUsedRodInfo()
+    }
+
     onClickPin(board, pin) {
         return () => {
             if (this.bulkModeStart === null) {

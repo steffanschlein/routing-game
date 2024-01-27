@@ -26,6 +26,10 @@ export class Game {
         const gameLogic = new GameLogic(this.updateUsedRodInfo())
         this.board = new Board(gameLogic)
 
+        this.resetBoardButton = createButton("Zurücksetzen")
+        this.resetBoardButton.onPress.connect(() => gameLogic.onClickResetRods(this.board))
+        this.gameContainer.addChild(this.resetBoardButton)
+
         this.gameContainer.addChild(this.board.boardContainer);
 
         this.helpButton = createButton("Anleitung")
@@ -109,6 +113,9 @@ export class Game {
         this.mainMenuButton.anchor.set(0, 1)
         this.mainMenuButton.x = this.board.boardContainer.x;
         this.mainMenuButton.y = this.app.screen.height - 20;
+        this.resetBoardButton.anchor.set(0.5, 1)
+        this.resetBoardButton.x = this.board.boardContainer.x + this.board.boardContainer.width / 2;
+        this.resetBoardButton.y = this.app.screen.height - 20;
         this.helpButton.anchor.set(1, 1)
         this.helpButton.x = this.board.boardContainer.x + this.board.boardContainer.width;
         this.helpButton.y = this.app.screen.height - 20;

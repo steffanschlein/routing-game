@@ -82,6 +82,13 @@ export class Board {
         }
     }
 
+    deselectAllRods() {
+        this.getAllRods().map((rod) => {
+            rod.selected = false;
+            rod.tint = rodBaseColor;
+        })
+    }
+
     selectPin(x, y) {
         this.pins[x][y].tint = pinSelectedColor
     }
@@ -127,8 +134,12 @@ export class Board {
         return sprite
     }
 
+    getAllRods() {
+        return this.rods_vertical.flat().concat(this.rods_horizontal.flat())
+    }
+
     countSelectedRods() {
-        return this.rods_vertical.flat().concat(this.rods_horizontal.flat()).filter(function(rod) {
+        return this.getAllRods().filter(function(rod) {
             return rod.selected;
         }).length;
     }
