@@ -4,12 +4,14 @@ const rodBaseColor = 0xd0d0d0;
 const rodHighlightColor = 0x0000ff;
 const pinBaseColor = 0x4c4c4c;
 const pinHighlightColor = 0xff0000;
-const pinSelectedColor = 0x0000ff;
 
 const PIN_DISTANCE = 50;
 const PIN_RADIUS = 7;
 const ROD_LENGTH = (PIN_DISTANCE - 2 * PIN_RADIUS) * 0.8;
 const ROD_WIDTH = PIN_RADIUS * 0.8
+
+const DIMMED_ALPHA = 0.4
+const NORMAL_ALPHA = 1.0
 
 export class Board {
     boardContainer;
@@ -54,11 +56,13 @@ export class Board {
                 let y = y_index * PIN_DISTANCE
                 if (x_index < 10) {
                     let rod = this.createRod(x + (PIN_DISTANCE - ROD_LENGTH) / 2, y, 0)
+                    rod.row = y_index
                     this.rods_horizontal[x_index][y_index] = rod
                     this.boardContainer.addChild(rod)
                 }
                 if (y_index < 10) {
                     let rod = this.createRod(x, y + (PIN_DISTANCE - ROD_LENGTH) / 2, 90)
+                    rod.column = x_index
                     this.rods_vertical[x_index][y_index] = rod
                     this.boardContainer.addChild(rod)
                 }
@@ -89,8 +93,22 @@ export class Board {
         })
     }
 
-    selectPin(x, y) {
-        this.pins[x][y].tint = pinSelectedColor
+    dimmBoard(exceptColumn, exceptRow) {
+        this.getAllRods().forEach(rod => {
+            if (rod.row != exceptRow && rod.column != exceptColumn) {
+                rod.alpha = DIMMED_ALPHA
+            }
+        })
+        this.pins.flat().forEach(pin => {
+            if (pin.x_index != exceptColumn && pin.y_index != exceptRow) {
+                pin.alpha = DIMMED_ALPHA
+            }
+        })
+    }
+
+    normalBoard() {
+        this.getAllRods().forEach(rod => rod.alpha = NORMAL_ALPHA)
+        this.pins.flat().forEach(pin => pin.alpha = NORMAL_ALPHA)
     }
 
     highlightPin(x, y) {

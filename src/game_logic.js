@@ -8,8 +8,10 @@ export class GameLogic {
 
     onClickRod(board, rod) {
         return () => {
-            board.toggleRod(rod);
-            this.updateUsedRodInfo()
+            if (this.bulkModeStart === null) {
+                board.toggleRod(rod);
+                this.updateUsedRodInfo()
+            }
         }
     }
 
@@ -22,7 +24,7 @@ export class GameLogic {
         return () => {
             if (this.bulkModeStart === null) {
                 this.bulkModeStart = [pin.x_index, pin.y_index]
-                board.selectPin(this.bulkModeStart[0], this.bulkModeStart[1])
+                board.dimmBoard(pin.x_index, pin.y_index)
             } else {
                 if (board.pins[this.bulkModeStart[0]][this.bulkModeStart[1]].active) {
                     board.highlightPin(this.bulkModeStart[0], this.bulkModeStart[1])
@@ -42,6 +44,7 @@ export class GameLogic {
                 }
                 this.bulkModeStart = null
                 this.updateUsedRodInfo()
+                board.normalBoard()
             }
         }
     }
