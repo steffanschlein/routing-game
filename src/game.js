@@ -91,7 +91,7 @@ export class Game {
             if (game.board.countSelectedRods() > game.board.allowedRods) {
                 game.basicText.style.fill = 0xff0000
             } else {
-                game.basicText.style.fill = 0x00000
+                game.basicText.style.fill = 0x000000
             }
         }
     }
